@@ -7,8 +7,8 @@ services:
       - SECRET_KEY=${SECRET_KEY:-dev-secret-key}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
     volumes:
-      - data:/app/backend/data
+      - data-wavelen:/app/backend/data
     restart: unless-stopped
 
 volumes:
-  data:
+  data-wavelen:
