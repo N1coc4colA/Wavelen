@@ -1,8 +1,14 @@
+import os
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 
-DB_PATH = "users.db"
+# Create a 'data' directory next to this file (if it doesn't exist)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+os.makedirs(DATA_DIR, exist_ok=True)
+DB_PATH = os.path.join(DATA_DIR, "users.db")
 
+# The rest of your functions remain unchanged...
 def init_db():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
