@@ -10,7 +10,7 @@ You can create your own _.env_ file from _.env.default_ and replace the values w
 ## Running
 If you just want to run it:
 ```
-$ docker-compose up --build
+$ docker-compose up
 ```
 If you want to build and run:
 ```
