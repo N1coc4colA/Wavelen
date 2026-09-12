@@ -1,12 +1,14 @@
-version: '3.8'
-
 services:
   app:
     build: .
     ports:
-      - "${HOST_PORT}:5000"        # use the host port from .env
+      - "${HOST_PORT:-5000}:5000"
     environment:
-      - SECRET_KEY=${SECRET_KEY}   # pass secret into the container
+      - SECRET_KEY=${SECRET_KEY:-dev-secret-key}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
     volumes:
-      - ./data:/app/backend/data
+      - data:/app/backend/data
     restart: unless-stopped
+
+volumes:
+  data:
