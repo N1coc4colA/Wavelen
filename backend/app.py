@@ -1,10 +1,7 @@
 import os
-import json
-import sqlite3
 from flask import Flask, request, jsonify, send_file, session, g
 from flask_cors import CORS
-from werkzeug.security import generate_password_hash, check_password_hash
-from db import init_db, get_user, create_user, verify_user, list_users, ensure_admin
+from db import init_db, get_user_by_id, create_user, verify_user, list_users, ensure_admin
 from utils import download_youtube_audio
 
 app = Flask(__name__, static_folder="../static", static_url_path="")
@@ -22,16 +19,6 @@ def load_logged_in_user():
         user = get_user_by_id(session["user_id"])
         if user:
             g.user = user
-
-def get_user_by_id(user_id):
-    conn = sqlite3.connect("users.db")
-    c = conn.cursor()
-    c.execute("SELECT id, username, is_admin FROM users WHERE id = ?", (user_id,))
-    row = c.fetchone()
-    conn.close()
-    if row:
-        return {"id": row[0], "username": row[1], "is_admin": bool(row[2])}
-    return None
 
 def login_required(f):
     from functools import wraps

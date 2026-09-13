@@ -8,7 +8,6 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 os.makedirs(DATA_DIR, exist_ok=True)
 DB_PATH = os.path.join(DATA_DIR, "users.db")
 
-# The rest of your functions remain unchanged...
 def init_db():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
@@ -31,6 +30,16 @@ def get_user(username):
     conn.close()
     if row:
         return {"id": row[0], "username": row[1], "password_hash": row[2], "is_admin": bool(row[3])}
+    return None
+
+def get_user_by_id(user_id):
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute("SELECT id, username, is_admin FROM users WHERE id = ?", (user_id,))
+    row = c.fetchone()
+    conn.close()
+    if row:
+        return {"id": row[0], "username": row[1], "is_admin": bool(row[2])}
     return None
 
 def create_user(username, password, is_admin=False):
@@ -67,7 +76,6 @@ def list_users():
 def ensure_admin():
     admin = get_user("admin")
     if not admin:
-        import os
         default_pass = os.environ.get("ADMIN_PASSWORD", "admin")
         create_user("admin", default_pass, is_admin=True)
         print(f"Admin user created (default password: {default_pass})")
